@@ -110,25 +110,23 @@ dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          9m52s
       <google-codelab-step label="LAB: Configure and Deploy OneAgent for Cloud Native Mode" duration="15">
         <p>Now we can deploy an application to our kubernetes cluster</p>
 <ol type="1">
-<li>Add the below snippet to the dynakube.yaml just above the oneAgent section at approxmiately line 60  <pre><code language="language-yaml" class="language-yaml">namespaceSelector:
+<li>Add the below snippet to the dynakube.yaml just above the oneAgent section at approxmiately line 60  <pre><code>namespaceSelector:
   matchLabels:
     could-native: enabled
 </code></pre>
-<ol type="1">
+</li>
 <li>Change &#34;the classicFullStack&#34; value under the oneAgent stanza to &#34;cloudNativeFullStack&#34;</li>
-<li>Before  <pre><code language="language-yaml" class="language-yaml">oneAgent:
+<li>Before  <pre><code>oneAgent:
 # Optional: enable classic fullstack monitoring and change its settings
 # Cannot be used in conjunction with cloud-native fullstack monitoring, application-only monitoring or host monitoring
-classicFullStack:
-# Optional: If specified, indicates the OneAgent version to use
-# Defaults to latest
-#
-# version:
+  classicFullStack:
+    # Optional: If specified, indicates the OneAgent version to use
+    # Defaults to latest
+    #
+    # version:
 </code></pre>
 </li>
-</ol>
-</li>
-<li>After  <pre><code language="language-yaml" class="language-yaml">oneAgent:
+<li>After  <pre><code>oneAgent:
 # Optional: enable classic fullstack monitoring and change its settings
 # Cannot be used in conjunction with cloud-native fullstack monitoring, application-only monitoring or host monitoring
   cloudNativeFullStack:
@@ -137,26 +135,24 @@ classicFullStack:
     #
     # version:
 </code></pre>
-<ol type="1">
-<li>The two modifications made should be next to each other, with you final dynakube.yaml looking like this  <pre><code language="language-yaml" class="language-yaml"># Optional: when enabled, and if Istio is installed on the Kubernetes environment, then the
+</li>
+<li>The two modifications made should be next to each other, with you final dynakube.yaml looking like this  <pre><code># Optional: when enabled, and if Istio is installed on the Kubernetes environment, then the
 # Operator will create the corresponding VirtualService and ServiceEntry objects to allow access
 # to the Dynatrace cluster from the agent or the activeGate. Disabled by default.
 #
 # enableIstio: false
 namespaceSelector:
-matchLabels:
-could-native: enabled
+  matchLabels:
+    could-native: enabled
 oneAgent:
-# Optional: enable classic fullstack monitoring and change its settings
-# Cannot be used in conjunction with cloud-native fullstack monitoring, application-only monitoring or host monitoring
-cloudNativeFullStack:
-# Optional: If specified, indicates the OneAgent version to use
-# Defaults to latest
-#
-# version:
+  # Optional: enable classic fullstack monitoring and change its settings
+  # Cannot be used in conjunction with cloud-native fullstack monitoring, application-only monitoring or host monitoring
+  cloudNativeFullStack:
+    # Optional: If specified, indicates the OneAgent version to use
+    # Defaults to latest
+    #
+    # version:
 </code></pre>
-</li>
-</ol>
 </li>
 <li>Make sure all changed have been saved and deploy the Dynatrace operator  <pre><code>kubectl apply -f dynakube.yaml
 </code></pre>

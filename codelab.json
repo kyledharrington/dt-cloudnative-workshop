@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2022-08-22T18:05:39-07:00",
+  "updated": "2022-08-22T18:09:43-07:00",
   "id": "dt-cloudnative-workshop",
   "duration": 105,
   "title": "Dynatrace K8s Operator Install \u0026 Walk Through",
