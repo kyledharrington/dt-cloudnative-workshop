@@ -32,7 +32,7 @@
 <p>Today we will cover the installation and value provided by the <a href="https://github.com/Dynatrace/dynatrace-operator" target="_blank">Dynatrace Kubernetes Operator deployment</a></p>
 <p>The Dynatrace operator is the k8s native way to gain full stack observability in your kubernetes and open shift environments. The Dynatrace operator provides continuous, automatic discovery &amp; observability across your kubernetes workloads. In this lab we&#39;ll work specifically with the cloud native deployment mode which will allow us to instrument only targeted namepsaces</p>
 <p class="image-container"><img alt="ENVISION THE FUTURE!" src="img/6346b14ce9438bb8.png"></p>
-<h3 is-upgraded>In today&#39;s lab we will:</h3>
+<h3 is-upgraded>In today&#39;s lab we will</h3>
 <ol type="1">
 <li>Deploy the Dynatrace Operator in cloud native mode</li>
 <li>Deploy a Microservice application to multiple namespaces</li>
@@ -188,7 +188,7 @@ cloudNativeFullStack:
       </google-codelab-step>
     
       <google-codelab-step label="LAB: The Kubernetes API Integration" duration="5">
-        <h2 is-upgraded>Lets review the data Dynatrace has collected already:</h2>
+        <h2 is-upgraded>Lets review the data Dynatrace has collected already</h2>
 <p>Out of the box, Dynatrace automatically collects telemetry for</p>
 <ul>
 <li>Cluster utilization metrics  <ul>
@@ -213,7 +213,13 @@ cloudNativeFullStack:
       <google-codelab-step label="LAB: Deploying the Google Micro Services Application" duration="10">
         <p>Now we will deploy our sample application across two namespaces. We will use the Google Microservices demo application &#34;Online boutique&#34;, this version has been branched from the <a href="https://github.com/GoogleCloudPlatform/microservices-demo" target="_blank">original</a>. This version uses and nginx ingresses and pvc for the redis pod.</p>
 <ol type="1">
-<li>First well create two namespaces, one for our lower envrionmnets and one for production. <code>shell<br>kubectl create namespace lower<br>kubectl create namespace production</code><br> 1. Next we&#39;ll label the production namespace for full stack injection <code>shell<br>kubectl label namespace production cloud-native=enabled<br></code></li>
+<li>First well create two namespaces, one for our lower envrionmnets and one for production.  <pre><code language="language-shell" class="language-shell">kubectl create namespace lower
+kubectl create namespace production
+</code></pre>
+<ol type="1">
+<li>Next we&#39;ll label the production namespace for full stack injection <code>shell<br>kubectl label namespace production cloud-native=enabled<br></code></li>
+</ol>
+</li>
 <li>Now only the production namespace will be insturmented via fullstack when we deploy</li>
 <li>Lets deploy the dt-boutique application to both the lower and production namespaces  <pre><code language="language-shell" class="language-shell">kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n lower
 kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n production 
@@ -252,12 +258,22 @@ nginx   LoadBalancer   10.96.1.110   34.82.179.37   80:30457/TCP   54m
 
       </google-codelab-step>
     
-      <google-codelab-step label="LAB: Kubernetes Scaling with Dynatrace" duration="15">
+      <google-codelab-step label="LAB: Kubernetes Scaling with Dynatrace" duration="5">
         <p>Now that we&#39;ve seen how to dynatrace instruments an existing application lets see how dynatrace handles and instruments pods scaling.</p>
 <ol type="1">
-<li>Back in the cloud console lets see how many pods are currently runnings <code>shell<br>kubectl get pod</code><br> 1. Your console should return similar to the below: <img alt="step14" src="img/95376c1add084051.png"><code>shell<br>kubectl get deployments<br></code></li>
+<li>Back in the cloud console lets see how many pods are currently runnings  <pre><code language="language-shell" class="language-shell">kubectl get pod
+</code></pre>
+<ol type="1">
+<li>Your console should return similar to the below: <img alt="step14" src="img/95376c1add084051.png"><code>shell<br>kubectl get deployments<br></code></li>
+</ol>
+</li>
 <li>Lets take a look a the deployments in the namespace, specifically the cart service <img alt="step14" src="img/ee356c75018cdf15.png"></li>
-<li>Lets scale the cart service up to 100 pods <code>shell<br>kubectl scale deployment cartservice --replicas=100</code><br> 1. This will begin spinning up new pods. You can see this by running: <code>shell<br>kubectl get pods<br></code><img alt="step14" src="img/a58e23dac8709e9a.png"></li>
+<li>Lets scale the cart service up to 100 pods  <pre><code language="language-shell" class="language-shell">kubectl scale deployment cartservice --replicas=100
+</code></pre>
+<ol type="1">
+<li>This will begin spinning up new pods. You can see this by running: <code>shell<br>kubectl get pods<br></code><img alt="step14" src="img/a58e23dac8709e9a.png"></li>
+</ol>
+</li>
 <li>Navigate to <em>Kubernetes Engine –&gt; Clusters –&gt; Workloads   </em><img alt="step14" src="img/5580a2082d2ea37f.png"></li>
 <li>From here we can immediately see that dynatrace has found an issue with trying to scale up the 100 pods we requested:  <ul>
 <li>all pods have been grouped together under the cart service work load</li>
@@ -266,7 +282,19 @@ nginx   LoadBalancer   10.96.1.110   34.82.179.37   80:30457/TCP   54m
 </ul>
 </li>
 <li>With this information, Dynatrace can be leveraged to proactively scale these nodes or descrease the pods scaling to resolve the resouce contention. <img alt="step14" src="img/17e819bd7d9da516.png"></li>
-<li>Lets scale the pods back down <code>shell<br>kubectl scale deployment cartservice --replicas=10</code><br> 1. From the workload level we can see the scaling events taking place:  <img alt="step14" src="img/155c26dba0e1cd5b.png"> 1. Once the pods stabilize dynatrace will automatically close this problem: <img alt="step14" src="img/c28cf3d9bb235fe1.png"> ## Lab: Wrap Up Duration: 5 ### Lab recap Today we reviewed how the dynatrace platform can be leveraged to provide full stack observability across your kubernetes environments. To you learned how to 1. Deploy the Dynatrace Operator in cloud native mode 1. Deploy a Microservice application to multiple namespaces 1. Instrumnent only the &#34;production&#34; namespace with Dynatrace 1. Setup Persistent Volume Claim Monitoring 1. Review all data collected by Dynatrace</li>
+<li>Lets scale the pods back down  <pre><code language="language-shell" class="language-shell">kubectl scale deployment cartservice --replicas=10
+</code></pre>
+<ol type="1">
+<li>From the workload level we can see the scaling events taking place: <img alt="step14" src="img/155c26dba0e1cd5b.png"></li>
+<li>Once the pods stabilize dynatrace will automatically close this problem: <img alt="step14" src="img/c28cf3d9bb235fe1.png">  Lab: Wrap Up    <h2 is-upgraded>Lab recap</h2>
+  Today we reviewed how the dynatrace platform can be leveraged to provide full stack observability across your kubernetes environments. To you learned how to</li>
+<li>Deploy the Dynatrace Operator in cloud native mode</li>
+<li>Deploy a Microservice application to multiple namespaces</li>
+<li>Instrumnent only the &#34;production&#34; namespace with Dynatrace</li>
+<li>Setup Persistent Volume Claim Monitoring</li>
+<li>Review all data collected by Dynatrace</li>
+</ol>
+</li>
 </ol>
 
 
