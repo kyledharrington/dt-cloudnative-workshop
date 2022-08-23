@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>Dynatrace K8s Operator Install &amp; Walk Through</title>
+  <title>Dynatrace K8s Cloud Native Operator Install &amp; Walk Through</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
@@ -23,7 +23,7 @@
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
   <google-codelab codelab-gaid=""
                   id="dt-cloudnative-workshop"
-                  title="Dynatrace K8s Operator Install &amp; Walk Through"
+                  title="Dynatrace K8s Cloud Native Operator Install &amp; Walk Through"
                   environment="web"
                   feedback-link="">
     
@@ -57,7 +57,7 @@
 <h2 is-upgraded>Prerequisities</h2>
 <p>The following are assumed to be already running and/or configured for this workshop</p>
 <ol type="1">
-<li><a href="https://kubernetes.io/" target="_blank">A Kubernetes Cluster which you can deploy to</a></li>
+<li><a href="https://kubernetes.io/" target="_blank">A GKE based Kubernetes Cluster which you can deploy to</a></li>
 <li><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/" target="_blank">kubectl cli</a></li>
 <li><a href="https://www.dynatrace.com/trial/" target="_blank">A Dynatrace SasS Tenant</a></li>
 </ol>
@@ -65,16 +65,30 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="LAB: Deploy the Operator and CSI Driver Daemonset" duration="15">
-        <p>First we&#39;ll deploy the Dynatrace Operator and the CSI <a href="https://kubernetes.io/blog/2019/01/15/container-storage-interface-ga/" target="_blank">Container Storage Interface</a></p>
+      <google-codelab-step label="LAB: Perpare the dynakube yaml file" duration="5">
+        <p>First we&#39;ll need to grab the configuration files deploy the Dynatrace OneAgent.</p>
 <ol type="1">
-<li>Navigate to: <em>DYNATRACE HUB –&gt; ONEAGENT –&gt; DOWNLOAD ONEAGENT</em><img alt="step10" src="img/e951b96f3545239d.png"></li>
+<li>Navigate to:</li>
+</ol>
+<p><em>DYNATRACE HUB –&gt; ONEAGENT –&gt; DOWNLOAD ONEAGENT</em></p>
+<pre><code>![step10](img/gcp10.png)
+</code></pre>
+<ol type="1">
 <li>Select &#34;<em>Kubernetes&#34;</em><img alt="step11" src="img/89a63e9f35a63091.png"></li>
+<li>At the next screen we&#39;ll need to provide some values:</li>
 <li>Populate the name field, note that this must be unique to your environment</li>
 <li>Click on &#34;create tokens&#34;, this will generate new tokens for the operator deployment</li>
 <li>Toggle on &#34;skip ssl cert check&#34;</li>
 <li>Toggle on &#34;Enable Volume Storage&#34;</li>
 <li>Click on &#34;Download dynakube.yaml&#34; <img alt="step12" src="img/6e3a7aa24e02614b.png"></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="LAB: Deploy the Dynatrace operator" duration="5">
+        <p>Next we&#39;ll create a namespace for all the Dynatrace components. Then deploy the Operator and the CSI <a href="https://kubernetes.io/blog/2019/01/15/container-storage-interface-ga/" target="_blank">(Container Storage Interface)</a> pods.</p>
+<ol type="1">
 <li>Create the dynatrace namespace:  <pre><code>kubectl create namespace dynatrace
 </code></pre>
 </li>
