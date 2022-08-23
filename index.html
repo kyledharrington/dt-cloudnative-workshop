@@ -65,7 +65,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="LAB: Deploy the Operator and CSI Driver Daemonset" duration="15">
+      <google-codelab-step label="LAB: Deploy the Operator and CSI Driver Daemonset" duration="0">
         <p>First we&#39;ll deploy the Dynatrace Operator and the CSI <a href="https://kubernetes.io/blog/2019/01/15/container-storage-interface-ga/" target="_blank">Container Storage Interface</a></p>
 <ol type="1">
 <li>Navigate to: <em>DYNATRACE HUB –&gt; ONEAGENT –&gt; DOWNLOAD ONEAGENT</em><img alt="step10" src="img/e951b96f3545239d.png"></li>
@@ -78,8 +78,8 @@
 <li>Create the dynatrace namespace:  <pre><code language="language-shell" class="language-shell">kubectl create namespace dynatrace
 </code></pre>
 <ol type="1">
-<li>Deploy the Dynatrace operator <code>shell<br>kubectl apply -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes.yaml<br></code></li>
-</ol>
+<li>Deploy the Dynatrace operator  <pre><code>kubectl apply -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes.yaml
+</code></pre>
 </li>
 <li>Verify that the Dynatrace operator and webhook pods have started:  <pre><code language="language-shell" class="language-shell">kubectl get pod -n dynatrace
 </code></pre>
@@ -101,50 +101,22 @@ dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          9m52s
 </code></pre>
 </li>
 </ol>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="LAB: Configure and Deploy OneAgent for Cloud Native Mode" duration="15">
-        <p>Now we can deploy an application to our kubernetes cluster</p>
-<ol type="1">
-<li>Add the below snippet to the dynakube.yaml just above the oneAgent section at approxmiately line 60  <pre><code language="language-yaml" class="language-yaml">namespaceSelector:
-  matchLabels:
-    could-native: enabled
-</code></pre>
-<ol type="1">
+    LAB: Configure and Deploy OneAgent for Cloud Native Mode    <ol type="1">
+<li>Add the below snippet to the dynakube.yaml just above the oneAgent section at approxmiately line 60 <code>yaml<br>namespaceSelector:<br>matchLabels:<br>could-native: enabled<br></code></li>
+</ol>
+</li>
 <li>Change &#34;the classicFullStack&#34; value under the oneAgent stanza to &#34;cloudNativeFullStack&#34;</li>
 <li>Before  <pre><code language="language-yaml" class="language-yaml">oneAgent:
 # Optional: enable classic fullstack monitoring and change its settings
 # Cannot be used in conjunction with cloud-native fullstack monitoring, application-only monitoring or host monitoring
-classicFullStack:
-# Optional: If specified, indicates the OneAgent version to use
-# Defaults to latest
-#
-# version:
-</code></pre>
-</li>
-</ol>
-</li>
-<li>After  <pre><code language="language-yaml" class="language-yaml">oneAgent:
-# Optional: enable classic fullstack monitoring and change its settings
-# Cannot be used in conjunction with cloud-native fullstack monitoring, application-only monitoring or host monitoring
-  cloudNativeFullStack:
+  classicFullStack:
     # Optional: If specified, indicates the OneAgent version to use
     # Defaults to latest
     #
     # version:
 </code></pre>
 <ol type="1">
-<li>The two modifications made should be next to each other, with you final dynakube.yaml looking like this  <pre><code language="language-yaml" class="language-yaml"># Optional: when enabled, and if Istio is installed on the Kubernetes environment, then the
-# Operator will create the corresponding VirtualService and ServiceEntry objects to allow access
-# to the Dynatrace cluster from the agent or the activeGate. Disabled by default.
-#
-# enableIstio: false
-namespaceSelector:
-matchLabels:
-could-native: enabled
-oneAgent:
+<li>After  <pre><code language="language-yaml" class="language-yaml">oneAgent:
 # Optional: enable classic fullstack monitoring and change its settings
 # Cannot be used in conjunction with cloud-native fullstack monitoring, application-only monitoring or host monitoring
 cloudNativeFullStack:
@@ -156,145 +128,145 @@ cloudNativeFullStack:
 </li>
 </ol>
 </li>
-<li>Make sure all changed have been saved and deploy the Dynatrace operator  <pre><code language="language-shell" class="language-shell">kubectl apply -f dynakube.yaml
-</code></pre>
-<ol type="1">
-<li>The below output will print when the operator has finished installing <code>shell<br>secret/dynatrace-lab created<br>dynakube.dynatrace.com/dynatrace-lab created<br></code></li>
-</ol>
-</li>
-<li>Verify that all pods have been succefully deployed by running  <pre><code language="language-shell" class="language-shell">kubectl get pods -n dynatrace
-</code></pre>
-<ol type="1">
-<li>Which should out put something similar to below: <code>shell<br>NAME                                  READY   STATUS    RESTARTS   AGE<br>dynatrace-lab-activegate-0            1/1     Running   0          2m41s<br>dynatrace-lab-oneagent-5mhf9          1/1     Running   0          2m42s<br>dynatrace-lab-oneagent-6vqcd          1/1     Running   0          2m42s<br>dynatrace-lab-oneagent-t4bz7          1/1     Running   0          2m42s<br>dynatrace-oneagent-csi-driver-d4rr6   3/3     Running   0          29m<br>dynatrace-oneagent-csi-driver-hbpdh   3/3     Running   0          29m<br>dynatrace-oneagent-csi-driver-pj2xm   3/3     Running   0          29m<br>dynatrace-operator-678d8f9d75-tmnn2   1/1     Running   0          33m<br>dynatrace-webhook-b798d4cb5-nh426     1/1     Running   0          33m<br>dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          33m<br></code></li>
-</ol>
-</li>
-</ol>
+<li>The two modifications made should be next to each other, with you final dynakube.yaml looking like this  <pre><code language="language-yaml" class="language-yaml"># Optional: when enabled, and if Istio is installed on the Kubernetes environment, then the
+# Operator will create the corresponding VirtualService and ServiceEntry objects to allow access
+# to the Dynatrace cluster from the agent or the activeGate. Disabled by default.
+#
+# enableIstio: false
 
 
-      </google-codelab-step>
-    
-      <google-codelab-step label="LAB: Kubernetes API &amp; PVC Itegration" duration="15">
-        <h3 is-upgraded>Now that we&#39;ve gotten our pods up and running we&#39;ll turn on feature flags the Kubernetes API and enable PVC metric ingestion in our cluster</h3>
+namespaceSelector:
+  matchLabels:
+    could-native: enabled
+
+
+oneAgent:
+  # Optional: enable classic fullstack monitoring and change its settings
+  # Cannot be used in conjunction with cloud-native fullstack monitoring, application-only monitoring or host monitoring
+  cloudNativeFullStack:
+    # Optional: If specified, indicates the OneAgent version to use
+    # Defaults to latest
+    #
+    # version:
+</code></pre>
 <ol type="1">
+<li>Make sure all changed have been saved and deploy the Dynatrace operator <code>shell<br>kubectl apply -f dynakube.yaml<br></code></li>
+</ol>
+</li>
+<li>The below output will print when the operator has finished installing  <pre><code language="language-shell" class="language-shell">secret/dynatrace-lab created
+dynakube.dynatrace.com/dynatrace-lab created
+</code></pre>
+<ol type="1">
+<li>Verify that all pods have been succefully deployed by running <code>shell<br>kubectl get pods -n dynatrace<br></code></li>
+</ol>
+</li>
+<li>Which should out put something similar to below:  <pre><code language="language-shell" class="language-shell">NAME                                  READY   STATUS    RESTARTS   AGE
+dynatrace-lab-activegate-0            1/1     Running   0          2m41s
+dynatrace-lab-oneagent-5mhf9          1/1     Running   0          2m42s
+dynatrace-lab-oneagent-6vqcd          1/1     Running   0          2m42s
+dynatrace-lab-oneagent-t4bz7          1/1     Running   0          2m42s
+dynatrace-oneagent-csi-driver-d4rr6   3/3     Running   0          29m
+dynatrace-oneagent-csi-driver-hbpdh   3/3     Running   0          29m
+dynatrace-oneagent-csi-driver-pj2xm   3/3     Running   0          29m
+dynatrace-operator-678d8f9d75-tmnn2   1/1     Running   0          33m
+dynatrace-webhook-b798d4cb5-nh426     1/1     Running   0          33m
+dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          33m
+</code></pre>
+LAB: Kubernetes API &amp; PVC Itegration    <h3 is-upgraded>Now that we&#39;ve gotten our pods up and running we&#39;ll turn on feature flags the Kubernetes API and enable PVC metric ingestion in our cluster</h3>
+  <ol type="1">
 <li>In your Dynatrace tenant, navigate to <em>INFRASTRUCTURE –&gt; KUBERNETES</em> Here you can your newly deployed cluster and any other k8s cluster you may have monitored with Dynatrace. <img alt="step14" src="img/582c9faaa54cb283.png"></li>
 <li>Click on &#34;...&#34; under &#34;actions&#34; and select &#34;Settings&#34; <img alt="step14" src="img/fa68a1a59c3c3516.png"></li>
 <li>Enable all available feature flags</li>
 <li>Click on &#34;Save Changes&#34; <img alt="step14" src="img/d156cdae48fe1db6.png"></li>
 <li>In your Dynatrace tenant, navigate to <em>DYNATRACE HUB –&gt; Search for &#34;PVC&#34; –&gt;</em><img alt="step14" src="img/17ff871fe0560fe8.png"></li>
-<li>Click on &#34;Add to environment&#34; <img alt="step14" src="img/729b73d34dece5c6.png"></li>
+<li>Click on &#34;Add to environment&#34; <img alt="step14" src="img/729b73d34dece5c6.png">  LAB: The Kubernetes API Integration    <h2 is-upgraded>Lets review the data Dynatrace has collected already</h2>
+  Out of the box, Dynatrace automatically collects telemetry for</li>
 </ol>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="LAB: The Kubernetes API Integration" duration="5">
-        <h2 is-upgraded>Lets review the data Dynatrace has collected already</h2>
-<p>Out of the box, Dynatrace automatically collects telemetry for</p>
-<ul>
-<li>Cluster utilization metrics  <ul>
+  <ul>
+<li>Cluster utilization metrics</li>
 <li>CPU &amp; Memory Usage, Request and Limits</li>
-</ul>
-</li>
-<li>Kubernetes Workload Metrics Aggregated by  <ul>
+<li>Kubernetes Workload Metrics Aggregated by</li>
 <li>Workload Type</li>
 <li>Pods</li>
 <li>Namespaces</li>
+<li>Kubernetes Vulnerabilities (<code>note: this module may not be enabled in your environment</code>) <img alt="step14" src="img/623be72ec45353d4.png"> Lets also note what is missing, <em>Kubernetes events!</em> We configured Dynatrace to capture all events in this cluster in our last step (enabling &#34;monitor events&#34;) We will now create a new application deployment which will populate Kubernetes native events in our dashboard   LAB: Deploying the Google Micro Services Application  <a href="https://github.com/GoogleCloudPlatform/microservices-demo" target="_blank">original</a>. This version uses and nginx ingresses and pvc for the redis pod.</li>
 </ul>
-</li>
-<li>Kubernetes Vulnerabilities (<code>note: this module may not be enabled in your environment</code>)</li>
-</ul>
-<p class="image-container"><img alt="step14" src="img/623be72ec45353d4.png"></p>
-<p>Lets also note what is missing, <em>Kubernetes events!</em></p>
-<p>We configured Dynatrace to capture all events in this cluster in our last step (enabling &#34;monitor events&#34;) We will now create a new application deployment which will populate Kubernetes native events in our dashboard</p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="LAB: Deploying the Google Micro Services Application" duration="10">
-        <p>Now we will deploy our sample application across two namespaces. We will use the Google Microservices demo application &#34;Online boutique&#34;, this version has been branched from the <a href="https://github.com/GoogleCloudPlatform/microservices-demo" target="_blank">original</a>. This version uses and nginx ingresses and pvc for the redis pod.</p>
-<ol type="1">
-<li>First well create two namespaces, one for our lower envrionmnets and one for production.  <pre><code language="language-shell" class="language-shell">kubectl create namespace lower
-kubectl create namespace production
-</code></pre>
-<ol type="1">
-<li>Next we&#39;ll label the production namespace for full stack injection <code>shell<br>kubectl label namespace production cloud-native=enabled<br></code></li>
+  <ol type="1">
+<li>First well create two namespaces, one for our lower envrionmnets and one for production. <code>shell<br>kubectl create namespace lower<br>kubectl create namespace production<br></code></li>
 </ol>
 </li>
+<li>Next we&#39;ll label the production namespace for full stack injection  <pre><code language="language-shell" class="language-shell">kubectl label namespace production cloud-native=enabled
+</code></pre>
+<ol type="1">
 <li>Now only the production namespace will be insturmented via fullstack when we deploy</li>
-<li>Lets deploy the dt-boutique application to both the lower and production namespaces  <pre><code language="language-shell" class="language-shell">kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n lower
-kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n production 
-</code></pre>
-<ol type="1">
-<li>Wait for the resources to become ready in your cluster</li>
-<li>Verify all pods are running <code>shell<br>kubectl get pods<br></code></li>
+<li>Lets deploy the dt-boutique application to both the lower and production namespaces <code>shell<br>kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n lower<br>kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n production <br></code></li>
 </ol>
 </li>
+<li>Wait for the resources to become ready in your cluster</li>
+<li>Verify all pods are running  <pre><code language="language-shell" class="language-shell">kubectl get pods
+</code></pre>
+<ol type="1">
 <li>Once all  your pods are running we&#39;ll want to access the web application. Run:  <pre><code language="language-shell" class="language-shell">kubectl get service nginx -n production
 </code></pre>
 <pre><code language="language-shell" class="language-shell">NAME    TYPE           CLUSTER-IP    EXTERNAL-IP    PORT(S)        AGE
 nginx   LoadBalancer   10.96.1.110   34.82.179.37   80:30457/TCP   54m
 </code></pre>
 </li>
-<li>Copy the EXTERNAL-IP address and paste it into a browser: <img alt="step14" src="img/6d24dd30f08158a8.png"></li>
-</ol>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="LAB: Exploring The Telemetry Collected by Dynatrace" duration="15">
-        <p>While we configured the front end of the application, the OneAgent daemonset we deployed earlier has been collecting our newly deployed application&#39;s telemetry data.</p>
-<ol type="1">
+<li>Copy the EXTERNAL-IP address and paste it into a browser: <img alt="step14" src="img/6d24dd30f08158a8.png">  LAB: Exploring The Telemetry Collected by Dynatrace  </li>
 <li>In your Dynatrace tenant, navigate to <em>INFRASTRUCTURE –&gt; KUBERNETES</em></li>
-<li>If we scroll down to the events section, we&#39;ll see that this now populating k8s native events from the google microservices deployment:  <ul>
+<li>If we scroll down to the events section, we&#39;ll see that this now populating k8s native events from the google microservices deployment:</li>
+</ol>
+  <ul>
 <li>Image pulls</li>
 <li>New scheduling events</li>
 <li>Pod starts <img alt="step14" src="img/6050ca7e1bb18bd3.png"></li>
 </ul>
-</li>
-<li>Dynatrace also automatically populates PVC statistics found in your cluster in an out of the box dashboard:</li>
-</ol>
-<p class="image-container"><img alt="step14" src="img/201dff579b5a5350.png"></p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="LAB: Kubernetes Scaling with Dynatrace" duration="5">
-        <p>Now that we&#39;ve seen how to dynatrace instruments an existing application lets see how dynatrace handles and instruments pods scaling.</p>
-<ol type="1">
+  <ol type="1">
+<li>Dynatrace also automatically populates PVC statistics found in your cluster in an out of the box dashboard: <img alt="step14" src="img/201dff579b5a5350.png">  LAB: Kubernetes Scaling with Dynatrace  </li>
 <li>Back in the cloud console lets see how many pods are currently runnings  <pre><code language="language-shell" class="language-shell">kubectl get pod
 </code></pre>
-<ol type="1">
-<li>Your console should return similar to the below: <img alt="step14" src="img/95376c1add084051.png"><code>shell<br>kubectl get deployments<br></code></li>
+</li>
 </ol>
 </li>
-<li>Lets take a look a the deployments in the namespace, specifically the cart service <img alt="step14" src="img/ee356c75018cdf15.png"></li>
-<li>Lets scale the cart service up to 100 pods  <pre><code language="language-shell" class="language-shell">kubectl scale deployment cartservice --replicas=100
+<li>Your console should return similar to the below: <img alt="step14" src="img/95376c1add084051.png">  <pre><code language="language-shell" class="language-shell">kubectl get deployments
 </code></pre>
 <ol type="1">
-<li>This will begin spinning up new pods. You can see this by running: <code>shell<br>kubectl get pods<br></code><img alt="step14" src="img/a58e23dac8709e9a.png"></li>
+<li>Lets take a look a the deployments in the namespace, specifically the cart service <img alt="step14" src="img/ee356c75018cdf15.png"></li>
+<li>Lets scale the cart service up to 100 pods <code>shell<br>kubectl scale deployment cartservice --replicas=100<br></code></li>
 </ol>
 </li>
-<li>Navigate to <em>Kubernetes Engine –&gt; Clusters –&gt; Workloads   </em><img alt="step14" src="img/5580a2082d2ea37f.png"></li>
-<li>From here we can immediately see that dynatrace has found an issue with trying to scale up the 100 pods we requested:  <ul>
+<li>This will begin spinning up new pods. You can see this by running:  <pre><code language="language-shell" class="language-shell">kubectl get pods
+</code></pre>
+<img alt="step14" src="img/a58e23dac8709e9a.png">  <ol type="1">
+<li>Navigate to <em>Kubernetes Engine –&gt; Clusters –&gt; Workloads</em><img alt="step14" src="img/5580a2082d2ea37f.png"></li>
+<li>From here we can immediately see that dynatrace has found an issue with trying to scale up the 100 pods we requested:</li>
+</ol>
+  <ul>
 <li>all pods have been grouped together under the cart service work load</li>
 <li>only 48 of the 100 we we requested we scheduleable</li>
 <li>Dynatrace has automatically created a problem beacuase of the resource contention <img alt="step14" src="img/129c37a956f5c410.png"></li>
 </ul>
-</li>
+  <ol type="1">
 <li>With this information, Dynatrace can be leveraged to proactively scale these nodes or descrease the pods scaling to resolve the resouce contention. <img alt="step14" src="img/17e819bd7d9da516.png"></li>
-<li>Lets scale the pods back down  <pre><code language="language-shell" class="language-shell">kubectl scale deployment cartservice --replicas=10
-</code></pre>
+<li>Lets scale the pods back down <code>shell<br>kubectl scale deployment cartservice --replicas=10<br></code></li>
+</ol>
+</li>
+<li>From the workload level we can see the scaling events taking place:  <img alt="step14" src="img/155c26dba0e1cd5b.png"></li>
+<li>Once the pods stabilize dynatrace will automatically close this problem: <img alt="step14" src="img/c28cf3d9bb235fe1.png"></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lab: Wrap Up" duration="5">
+        <h2 is-upgraded>Lab recap</h2>
+<p>Today we reviewed how the dynatrace platform can be leveraged to provide full stack observability across your kubernetes environments. To you learned how to</p>
 <ol type="1">
-<li>From the workload level we can see the scaling events taking place: <img alt="step14" src="img/155c26dba0e1cd5b.png"></li>
-<li>Once the pods stabilize dynatrace will automatically close this problem: <img alt="step14" src="img/c28cf3d9bb235fe1.png">  Lab: Wrap Up    <h2 is-upgraded>Lab recap</h2>
-  Today we reviewed how the dynatrace platform can be leveraged to provide full stack observability across your kubernetes environments. To you learned how to</li>
 <li>Deploy the Dynatrace Operator in cloud native mode</li>
 <li>Deploy a Microservice application to multiple namespaces</li>
 <li>Instrumnent only the &#34;production&#34; namespace with Dynatrace</li>
 <li>Setup Persistent Volume Claim Monitoring</li>
 <li>Review all data collected by Dynatrace</li>
-</ol>
-</li>
 </ol>
 
 
