@@ -122,7 +122,7 @@ dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          9m52s
       </google-codelab-step>
     
       <google-codelab-step label="LAB: Configure and Deploy OneAgent for Cloud Native Mode" duration="15">
-        <p>Now we can deploy an application to our kubernetes cluster</p>
+        <p>Now we can deploy an application to our kubernetes cluster. This does require two changes to the dynakube yaml file we downloaded from our tenant.</p>
 <ol type="1">
 <li>Add the below snippet to the dynakube.yaml just above the oneAgent section at approxmiately line 60  <pre><code>namespaceSelector:
   matchLabels:
@@ -197,7 +197,7 @@ dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          33m
       </google-codelab-step>
     
       <google-codelab-step label="LAB: Kubernetes API &amp; PVC Itegration" duration="15">
-        <h3 is-upgraded>Now that we&#39;ve gotten our pods up and running we&#39;ll turn on feature flags the Kubernetes API and enable PVC metric ingestion in our cluster</h3>
+        <p>Now that we&#39;ve gotten our pods up and running we&#39;ll turn on feature flags the Kubernetes API and enable PVC metric ingestion in our cluster. These features are both dependent on the activegate we deployed with the Dynakube yaml in the last step.</p>
 <ol type="1">
 <li>In your Dynatrace tenant, navigate to <em>INFRASTRUCTURE –&gt; KUBERNETES</em> Here you can your newly deployed cluster and any other k8s cluster you may have monitored with Dynatrace. <img alt="step14" src="img/582c9faaa54cb283.png"></li>
 <li>Click on &#34;...&#34; under &#34;actions&#34; and select &#34;Settings&#34; <img alt="step14" src="img/fa68a1a59c3c3516.png"></li>
@@ -210,7 +210,7 @@ dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          33m
 
       </google-codelab-step>
     
-      <google-codelab-step label="LAB: The Kubernetes API Integration" duration="5">
+      <google-codelab-step label="LAB: The Kubernetes API Integration" duration="10">
         <h2 is-upgraded>Lets review the data Dynatrace has collected already</h2>
 <p>Out of the box, Dynatrace automatically collects telemetry for</p>
 <ul>
@@ -234,7 +234,7 @@ dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          33m
       </google-codelab-step>
     
       <google-codelab-step label="LAB: Deploying the Google Micro Services Application" duration="10">
-        <p>Now we will deploy our sample application across two namespaces. We will use the Google Microservices demo application &#34;Online boutique&#34;, this version has been branched from the <a href="https://github.com/GoogleCloudPlatform/microservices-demo" target="_blank">original</a>. This version uses and nginx ingresses and pvc for the redis pod.</p>
+        <p>Now we will deploy our sample application across two namespaces. We will use the Google Microservices demo application &#34;Online boutique&#34;, this version has been branched from the <a href="https://github.com/GoogleCloudPlatform/microservices-demo" target="_blank">original</a>. This version uses and nginx ingresses and pvc for the redis pod for the purposes of this lab.</p>
 <ol type="1">
 <li>First well create two namespaces, one for our lower envrionmnets and one for production.  <pre><code>kubectl create namespace lower
 kubectl create namespace production
@@ -266,6 +266,7 @@ nginx   LoadBalancer   10.96.1.110   34.82.179.37   80:30457/TCP   54m
     
       <google-codelab-step label="LAB: Exploring The Telemetry Collected by Dynatrace" duration="15">
         <p>While we configured the front end of the application, the OneAgent daemonset we deployed earlier has been collecting our newly deployed application&#39;s telemetry data.</p>
+<h3 is-upgraded>Kubernetes Specific Data points</h3>
 <ol type="1">
 <li>In your Dynatrace tenant, navigate to <em>INFRASTRUCTURE –&gt; KUBERNETES</em></li>
 <li>If we scroll down to the events section, we&#39;ll see that this now populating k8s native events from the google microservices deployment:  <ul>
@@ -274,9 +275,20 @@ nginx   LoadBalancer   10.96.1.110   34.82.179.37   80:30457/TCP   54m
 <li>Pod starts <img alt="step14" src="img/6050ca7e1bb18bd3.png"></li>
 </ul>
 </li>
-<li>Dynatrace also automatically populates PVC statistics found in your cluster in an out of the box dashboard:</li>
 </ol>
-<p class="image-container"><img alt="step14" src="img/201dff579b5a5350.png"></p>
+<h3 is-upgraded>Persistent Volume Claim Data Points</h3>
+<ol type="1">
+<li>The configured PVC entention enables multiple new PVC specific metrics from the kubelet volumes for customized reporting and dashboarding. <img alt="step14" src="img/8c9db719ada584d1.png"></li>
+<li>These metric data points are also automatically populated for PVC statistics in an out of the box dashboard, &#34;Kubernetes Persistent Volume Claims&#34; for your clusters once enabled: <img alt="step14" src="img/201dff579b5a5350.png"></li>
+</ol>
+<h3 is-upgraded>Cloud Native Full stack differences:</h3>
+<ol type="1">
+<li>In the lower environmnet where we did not configure application injection, while we do not provide &#34;service&#34; or application performance metrics, we are still collecting all infrastrucute and pod level data points:</li>
+</ol>
+<p class="image-container"><img alt="step14" src="img/1269961cffdb827e.png"></p>
+<ol type="1">
+<li>Meanwhile in production Dynatrace is providing full-stack visibility:  <img alt="step14" src="img/2f2049211fbf115f.png"></li>
+</ol>
 
 
       </google-codelab-step>
