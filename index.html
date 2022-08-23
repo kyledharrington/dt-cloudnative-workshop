@@ -158,17 +158,28 @@ cloudNativeFullStack:
 </li>
 </ol>
 </li>
-<li>Make sure all changed have been saved and deploy the Dynatrace operator  <pre><code language="language-shell" class="language-shell">kubectl apply -f dynakube.yaml
+<li>Make sure all changed have been saved and deploy the Dynatrace operator  <pre><code>kubectl apply -f dynakube.yaml
 </code></pre>
-<ol type="1">
-<li>The below output will print when the operator has finished installing <code>shell<br>secret/dynatrace-lab created<br>dynakube.dynatrace.com/dynatrace-lab created<br></code></li>
-</ol>
 </li>
-<li>Verify that all pods have been succefully deployed by running  <pre><code language="language-shell" class="language-shell">kubectl get pods -n dynatrace
+<li>The below output will print when the operator has finished installing  <pre><code>secret/dynatrace-lab created
+dynakube.dynatrace.com/dynatrace-lab created
 </code></pre>
-<ol type="1">
-<li>Which should out put something similar to below: <code>shell<br>NAME                                  READY   STATUS    RESTARTS   AGE<br>dynatrace-lab-activegate-0            1/1     Running   0          2m41s<br>dynatrace-lab-oneagent-5mhf9          1/1     Running   0          2m42s<br>dynatrace-lab-oneagent-6vqcd          1/1     Running   0          2m42s<br>dynatrace-lab-oneagent-t4bz7          1/1     Running   0          2m42s<br>dynatrace-oneagent-csi-driver-d4rr6   3/3     Running   0          29m<br>dynatrace-oneagent-csi-driver-hbpdh   3/3     Running   0          29m<br>dynatrace-oneagent-csi-driver-pj2xm   3/3     Running   0          29m<br>dynatrace-operator-678d8f9d75-tmnn2   1/1     Running   0          33m<br>dynatrace-webhook-b798d4cb5-nh426     1/1     Running   0          33m<br>dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          33m<br></code></li>
-</ol>
+</li>
+<li>Verify that all pods have been succefully deployed by running  <pre><code>kubectl get pods -n dynatrace
+</code></pre>
+</li>
+<li>Which should out put something similar to below:  <pre><code>NAME                                  READY   STATUS    RESTARTS   AGE
+dynatrace-lab-activegate-0            1/1     Running   0          2m41s
+dynatrace-lab-oneagent-5mhf9          1/1     Running   0          2m42s
+dynatrace-lab-oneagent-6vqcd          1/1     Running   0          2m42s
+dynatrace-lab-oneagent-t4bz7          1/1     Running   0          2m42s
+dynatrace-oneagent-csi-driver-d4rr6   3/3     Running   0          29m
+dynatrace-oneagent-csi-driver-hbpdh   3/3     Running   0          29m
+dynatrace-oneagent-csi-driver-pj2xm   3/3     Running   0          29m
+dynatrace-operator-678d8f9d75-tmnn2   1/1     Running   0          33m
+dynatrace-webhook-b798d4cb5-nh426     1/1     Running   0          33m
+dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          33m
+</code></pre>
 </li>
 </ol>
 
@@ -215,25 +226,25 @@ cloudNativeFullStack:
       <google-codelab-step label="LAB: Deploying the Google Micro Services Application" duration="10">
         <p>Now we will deploy our sample application across two namespaces. We will use the Google Microservices demo application &#34;Online boutique&#34;, this version has been branched from the <a href="https://github.com/GoogleCloudPlatform/microservices-demo" target="_blank">original</a>. This version uses and nginx ingresses and pvc for the redis pod.</p>
 <ol type="1">
-<li>First well create two namespaces, one for our lower envrionmnets and one for production.  <pre><code language="language-shell" class="language-shell">kubectl create namespace lower
+<li>First well create two namespaces, one for our lower envrionmnets and one for production.  <pre><code>kubectl create namespace lower
 kubectl create namespace production
 </code></pre>
-<ol type="1">
-<li>Next we&#39;ll label the production namespace for full stack injection <code>shell<br>kubectl label namespace production cloud-native=enabled<br></code></li>
-</ol>
+</li>
+<li>Next we&#39;ll label the production namespace for full stack injection  <pre><code>kubectl label namespace production cloud-native=enabled
+</code></pre>
 </li>
 <li>Now only the production namespace will be insturmented via fullstack when we deploy</li>
-<li>Lets deploy the dt-boutique application to both the lower and production namespaces  <pre><code language="language-shell" class="language-shell">kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n lower
+<li>Lets deploy the dt-boutique application to both the lower and production namespaces  <pre><code>kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n lower
 kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n production 
 </code></pre>
-<ol type="1">
-<li>Wait for the resources to become ready in your cluster</li>
-<li>Verify all pods are running <code>shell<br>kubectl get pods<br></code></li>
-</ol>
 </li>
-<li>Once all  your pods are running we&#39;ll want to access the web application. Run:  <pre><code language="language-shell" class="language-shell">kubectl get service nginx -n production
+<li>Wait for the resources to become ready in your cluster</li>
+<li>Verify all pods are running  <pre><code>kubectl get pods
 </code></pre>
-<pre><code language="language-shell" class="language-shell">NAME    TYPE           CLUSTER-IP    EXTERNAL-IP    PORT(S)        AGE
+</li>
+<li>Once all  your pods are running we&#39;ll want to access the web application. Run:  <pre><code>kubectl get service nginx -n production
+</code></pre>
+<pre><code>NAME    TYPE           CLUSTER-IP    EXTERNAL-IP    PORT(S)        AGE
 nginx   LoadBalancer   10.96.1.110   34.82.179.37   80:30457/TCP   54m
 </code></pre>
 </li>
@@ -260,22 +271,22 @@ nginx   LoadBalancer   10.96.1.110   34.82.179.37   80:30457/TCP   54m
 
       </google-codelab-step>
     
-      <google-codelab-step label="LAB: Kubernetes Scaling with Dynatrace" duration="5">
+      <google-codelab-step label="LAB: Kubernetes Scaling with Dynatrace" duration="15">
         <p>Now that we&#39;ve seen how to dynatrace instruments an existing application lets see how dynatrace handles and instruments pods scaling.</p>
 <ol type="1">
-<li>Back in the cloud console lets see how many pods are currently runnings  <pre><code language="language-shell" class="language-shell">kubectl get pod
+<li>Back in the cloud console lets see how many pods are currently runnings  <pre><code>kubectl get pod
 </code></pre>
-<ol type="1">
-<li>Your console should return similar to the below: <img alt="step14" src="img/95376c1add084051.png"><code>shell<br>kubectl get deployments<br></code></li>
-</ol>
+</li>
+<li>Your console should return similar to the below: <img alt="step14" src="img/95376c1add084051.png">  <pre><code>kubectl get deployments
+</code></pre>
 </li>
 <li>Lets take a look a the deployments in the namespace, specifically the cart service <img alt="step14" src="img/ee356c75018cdf15.png"></li>
-<li>Lets scale the cart service up to 100 pods  <pre><code language="language-shell" class="language-shell">kubectl scale deployment cartservice --replicas=100
+<li>Lets scale the cart service up to 100 pods  <pre><code>kubectl scale deployment cartservice --replicas=100
 </code></pre>
-<ol type="1">
-<li>This will begin spinning up new pods. You can see this by running: <code>shell<br>kubectl get pods<br></code><img alt="step14" src="img/a58e23dac8709e9a.png"></li>
-</ol>
 </li>
+<li>This will begin spinning up new pods. You can see this by running:  <pre><code>kubectl get pods
+</code></pre>
+<img alt="step14" src="img/a58e23dac8709e9a.png"></li>
 <li>Navigate to <em>Kubernetes Engine –&gt; Clusters –&gt; Workloads   </em><img alt="step14" src="img/5580a2082d2ea37f.png"></li>
 <li>From here we can immediately see that dynatrace has found an issue with trying to scale up the 100 pods we requested:  <ul>
 <li>all pods have been grouped together under the cart service work load</li>
@@ -284,19 +295,25 @@ nginx   LoadBalancer   10.96.1.110   34.82.179.37   80:30457/TCP   54m
 </ul>
 </li>
 <li>With this information, Dynatrace can be leveraged to proactively scale these nodes or descrease the pods scaling to resolve the resouce contention. <img alt="step14" src="img/17e819bd7d9da516.png"></li>
-<li>Lets scale the pods back down  <pre><code language="language-shell" class="language-shell">kubectl scale deployment cartservice --replicas=10
+<li>Lets scale the pods back down  <pre><code>kubectl scale deployment cartservice --replicas=10
 </code></pre>
+</li>
+<li>From the workload level we can see the scaling events taking place:  <img alt="step14" src="img/155c26dba0e1cd5b.png"></li>
+<li>Once the pods stabilize dynatrace will automatically close this problem: <img alt="step14" src="img/c28cf3d9bb235fe1.png"></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Lab: Wrap Up" duration="5">
+        <h2 is-upgraded>Lab recap</h2>
+<p>Today we reviewed how the dynatrace platform can be leveraged to provide full stack observability across your kubernetes environments. To you learned how to</p>
 <ol type="1">
-<li>From the workload level we can see the scaling events taking place: <img alt="step14" src="img/155c26dba0e1cd5b.png"></li>
-<li>Once the pods stabilize dynatrace will automatically close this problem: <img alt="step14" src="img/c28cf3d9bb235fe1.png">  Lab: Wrap Up    <h2 is-upgraded>Lab recap</h2>
-  Today we reviewed how the dynatrace platform can be leveraged to provide full stack observability across your kubernetes environments. To you learned how to</li>
 <li>Deploy the Dynatrace Operator in cloud native mode</li>
 <li>Deploy a Microservice application to multiple namespaces</li>
 <li>Instrumnent only the &#34;production&#34; namespace with Dynatrace</li>
 <li>Setup Persistent Volume Claim Monitoring</li>
 <li>Review all data collected by Dynatrace</li>
-</ol>
-</li>
 </ol>
 
 
