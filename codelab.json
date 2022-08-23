@@ -1,0 +1,17 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2022-08-22T16:45:54-07:00",
+  "id": "dt-cloudnative-workshop",
+  "duration": 100,
+  "title": "Dynatrace K8s Operator Install \u0026 Walk Through",
+  "summary": "Dynatrace K8s Cloud Native Install \u0026 Walk Through",
+  "source": "dt-cloudnative-workshop.md",
+  "theme": "",
+  "status": null,
+  "category": null,
+  "tags": [],
+  "url": "dt-cloudnative-workshop"
+}
