@@ -288,19 +288,27 @@ production    nginx                      LoadBalancer   10.28.14.73    34.105.55
       </google-codelab-step>
     
       <google-codelab-step label="LAB: Kubernetes Scaling with Dynatrace" duration="15">
-        <p>Now that we&#39;ve seen how to dynatrace instruments an existing application lets see how dynatrace handles and instruments pods scaling.</p>
+        <p>Now that we&#39;ve seen how to dynatrace instruments an existing application lets see how dynatrace handles and instruments pods scaling in our production environment</p>
 <ol type="1">
-<li>Back in the cloud console lets see how many pods are currently runnings  <pre><code>kubectl get pod
+<li>Back in the cloud console lets see how many pods are currently running in the production namespace  <pre><code>kubectl get pod -n production
 </code></pre>
 </li>
-<li>Your console should return similar to the below: <img alt="step14" src="img/95376c1add084051.png">  <pre><code>kubectl get deployments
+<li>Your console should return similar to the below: <img alt="step14" src="img/95376c1add084051.png">  <pre><code>kubectl get deployments -n production
 </code></pre>
 </li>
 <li>Lets take a look a the deployments in the namespace, specifically the cart service <img alt="step14" src="img/ee356c75018cdf15.png"></li>
-<li>Lets scale the cart service up to 100 pods  <pre><code>kubectl scale deployment cartservice --replicas=100
+<li>Lets scale the cart service up to 10 pods  <pre><code>kubectl scale deployment -n production cartservice --replicas=10
 </code></pre>
 </li>
-<li>This will begin spinning up new pods. You can see this by running:  <pre><code>kubectl get pods
+<li>This will begin spinning up new pods. You can see this by running:  <pre><code>kubectl get pods -n production
+</code></pre>
+</li>
+<li>Dynatrace will automatically instrument these new pods with code level visibility. If we were to do this in the &#34;lower&#34; namespace we would only have infrastructure level visibility.</li>
+<li>Once the 10 new pods have stabilized, let see how Dynatrace handles a pod failure event. Lets scale these pods up simulate either a DDOS attack triggering an HPA or an under provisioned Kubernetes cluster.</li>
+</ol>
+<h3 is-upgraded>Simulating a Reliabiity Engineering scenario with Dynatrace</h3>
+<ol type="1">
+<li>Lets scale the cart service up to 100 pods &gt;:)  <pre><code>kubectl scale deployment -n production cartservice --replicas=100
 </code></pre>
 <img alt="step14" src="img/a58e23dac8709e9a.png"></li>
 <li>Navigate to <em>Kubernetes Engine –&gt; Clusters –&gt; Workloads   </em><img alt="step14" src="img/5580a2082d2ea37f.png"></li>
