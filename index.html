@@ -306,7 +306,7 @@ production    nginx                      LoadBalancer   10.28.14.73    34.105.55
 <li>Dynatrace will automatically instrument these new pods with code level visibility. If we were to do this in the &#34;lower&#34; namespace we would only have infrastructure level visibility.</li>
 <li>Once the 10 new pods have stabilized, let see how Dynatrace handles a pod failure event. Lets scale these pods up simulate either a DDOS attack triggering an HPA or an under provisioned Kubernetes cluster.</li>
 </ol>
-<h3 is-upgraded>Simulating a Reliabiity Engineering scenario with Dynatrace</h3>
+<h3 is-upgraded>Simulating a Reliability Engineering scenario with Dynatrace</h3>
 <ol type="1">
 <li>Lets scale the cart service up to 100 pods &gt;:)  <pre><code>kubectl scale deployment -n production cartservice --replicas=100
 </code></pre>
