@@ -228,7 +228,7 @@ dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          33m
 
       </google-codelab-step>
     
-      <google-codelab-step label="LAB: Deploying the Google Micro Services Application" duration="10">
+      <google-codelab-step label="LAB: Deploying the DT-Boutique Micro Services Application" duration="10">
         <p>Now we will deploy our sample application across two namespaces. We will use the Google Microservices demo application &#34;Online boutique&#34;, this version has been branched from the <a href="https://github.com/GoogleCloudPlatform/microservices-demo" target="_blank">original</a>. This version uses and nginx ingresses and pvc for the redis pod for the purposes of this lab.</p>
 <ol type="1">
 <li>First well create two namespaces, one for our lower envrionmnets and one for production.  <pre><code>kubectl create namespace lower
@@ -243,14 +243,13 @@ kubectl create namespace production
 kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n production 
 </code></pre>
 </li>
-<li>Wait for the resources to become ready in your cluster</li>
-<li>Verify all pods are running  <pre><code>kubectl get pods
+<li>It should take about 2 minutes for all pods come up in both namespaces. You can check pods status by running:  <pre><code>kubectl get pod -n production; kubectl get pod -n lower
 </code></pre>
 </li>
-<li>Once all  your pods are running we&#39;ll want to access the web application. Run:  <pre><code>kubectl get service nginx -n production
+<li>Once all your pods are running you can find the external endpoint to access the application by running:  <pre><code>kubectl get svc --all-namespaces| grep nginx
 </code></pre>
-<pre><code>NAME    TYPE           CLUSTER-IP    EXTERNAL-IP    PORT(S)        AGE
-nginx   LoadBalancer   10.96.1.110   34.82.179.37   80:30457/TCP   54m
+<pre><code>lower         nginx                      LoadBalancer   10.28.0.96     34.82.229.185   80:32116/TCP     4d7h
+production    nginx                      LoadBalancer   10.28.14.73    34.105.55.209   80:32543/TCP     4d7h
 </code></pre>
 </li>
 <li>Copy the EXTERNAL-IP address and paste it into a browser: <img alt="step14" src="img/6d24dd30f08158a8.png"></li>
