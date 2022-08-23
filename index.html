@@ -45,8 +45,7 @@
       </google-codelab-step>
     
       <google-codelab-step label="Technical Specification &amp; Prerequsities" duration="5">
-        <p>The following</p>
-<h2 is-upgraded>Technologies We Will Work With Today</h2>
+        <h2 is-upgraded>Technologies We Will Work With Today</h2>
 <ul>
 <li><a href="https://www.dynatrace.com/trial/" target="_blank">Dynatrace SasS Tenant</a></li>
 <li><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/" target="_blank">kubectl cli</a></li>
@@ -231,14 +230,14 @@ dynatrace-webhook-b798d4cb5-tzz5q     1/1     Running   0          33m
       <google-codelab-step label="LAB: Deploying the DT-Boutique Micro Services Application" duration="10">
         <p>Now we will deploy our sample application across two namespaces. We will use the Google Microservices demo application &#34;Online boutique&#34;, this version has been branched from the <a href="https://github.com/GoogleCloudPlatform/microservices-demo" target="_blank">original</a>. This version uses and nginx ingresses and pvc for the redis pod for the purposes of this lab.</p>
 <ol type="1">
-<li>First well create two namespaces, one for our lower envrionmnets and one for production.  <pre><code>kubectl create namespace lower
+<li>First we will create two namespaces, one for a lower envrionment and one for production.  <pre><code>kubectl create namespace lower
 kubectl create namespace production
 </code></pre>
 </li>
-<li>Next we&#39;ll label the production namespace for full stack injection  <pre><code>kubectl label namespace production cloud-native=enabled
+<li>Next we will label the production namespace for full stack injection  <pre><code>kubectl label namespace production cloud-native=enabled
 </code></pre>
 </li>
-<li>Now only the production namespace will be insturmented via fullstack when we deploy</li>
+<li>With this label in place only the production namespace, and any other namspace with this label applied, will be instrumented via fullstack when we deploy. All others will  This specific key=value pair was set in step 5 of the lab by setting the <code>namespaceSelector:</code> value. This can be modified to match your own environment variables.</li>
 <li>Lets deploy the dt-boutique application to both the lower and production namespaces  <pre><code>kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n lower
 kubectl apply -f https://raw.githubusercontent.com/kyledharrington/dt-boutique/main/dt-boutique.yaml -n production 
 </code></pre>
